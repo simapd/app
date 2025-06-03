@@ -9,6 +9,7 @@ import {
   type Theme,
   ThemeProvider,
 } from '@react-navigation/native'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Stack } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
@@ -32,6 +33,7 @@ export default function RootLayout() {
   const hasMounted = useRef(false)
   const { setColorScheme, isDarkColorScheme } = useColorScheme()
   const [isColorSchemeLoaded, setIsColorSchemeLoaded] = useState(false)
+  const queryClient = new QueryClient()
 
   useIsomorphicLayoutEffect(() => {
     if (hasMounted.current) {
@@ -67,15 +69,17 @@ export default function RootLayout() {
     <GestureHandlerRootView>
       <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
         <SafeAreaProvider>
-          <BottomSheetModalProvider>
-            <StatusBar style={isDarkColorScheme ? 'light' : 'dark'} />
-            <Stack screenOptions={{ headerShown: false }} />
-            <Toaster
-              position="top-center"
-              theme={isDarkColorScheme ? 'dark' : 'light'}
-              richColors
-            />
-          </BottomSheetModalProvider>
+          <QueryClientProvider client={queryClient}>
+            <BottomSheetModalProvider>
+              <StatusBar style={isDarkColorScheme ? 'light' : 'dark'} />
+              <Stack screenOptions={{ headerShown: false }} />
+              <Toaster
+                position="top-center"
+                theme={isDarkColorScheme ? 'dark' : 'light'}
+                richColors
+              />
+            </BottomSheetModalProvider>
+          </QueryClientProvider>
         </SafeAreaProvider>
       </ThemeProvider>
     </GestureHandlerRootView>
