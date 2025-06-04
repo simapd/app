@@ -1,13 +1,22 @@
 import { Text } from '@/components/ui/text'
-import { useColorScheme } from '@/lib/use-color-scheme'
+import { ScrollView } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 export default function Home() {
-  const { colorScheme } = useColorScheme()
-
   return (
-    <SafeAreaView className="flex-1 items-center justify-center gap-6 px-6">
-      <Text>Hello World!</Text>
+    <SafeAreaView style={{ flex: 1 }} edges={['top', 'left', 'right']}>
+      <ScrollView
+        contentContainerStyle={{
+          flexGrow: 1,
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: 24,
+          paddingHorizontal: 24,
+        }}
+        showsVerticalScrollIndicator={false}
+      >
+        <Text>Hello World!</Text>
+      </ScrollView>
     </SafeAreaView>
   )
 }
