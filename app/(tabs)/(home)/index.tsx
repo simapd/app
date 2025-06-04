@@ -125,6 +125,39 @@ export default function Home() {
             </CardContent>
           </Card>
         )}
+
+        {isLoading ? (
+          <Skeleton className="w-full h-48 rounded-2xl" />
+        ) : (
+          <Card className="w-full rounded-2xl">
+            <CardHeader>
+              <Text className="text-2xl font-semibold">Movimentação</Text>
+            </CardHeader>
+            <CardContent className="flex flex-row items-center justify-between gap-4">
+              <View className="flex flex-col items-center justify-center">
+                <View className="flex flex-row items-baseline gap-1">
+                  <Text className="text-3xl font-semibold">0.70</Text>
+                  <Text className="text-xl">m/s</Text>
+                </View>
+                <Text className="text-lg">Instável</Text>
+              </View>
+              <View className="flex-1 w-full gap-1 items-end justify-between">
+                <View className="flex flex-row items-center gap-6">
+                  <Text className="text-lg">Ontem</Text>
+                  <Text className="text-lg font-semibold">0.45 m/s</Text>
+                </View>
+                <View className="flex flex-row items-center gap-6">
+                  <Text className="text-lg">Quinta</Text>
+                  <Text className="text-lg font-semibold">0.90 m/s</Text>
+                </View>
+                <View className="flex flex-row items-center gap-6">
+                  <Text className="text-lg">Quarta</Text>
+                  <Text className="text-lg font-semibold">0.45 m/s</Text>
+                </View>
+              </View>
+            </CardContent>
+          </Card>
+        )}
       </ScrollView>
     </SafeAreaView>
   )
