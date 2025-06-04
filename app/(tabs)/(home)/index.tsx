@@ -3,13 +3,15 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { Text } from '@/components/ui/text'
 import Colors from '@/constants/Colors'
 import { useColorScheme } from '@/lib/use-color-scheme'
+import { useRouter } from 'expo-router'
 import { AlertTriangle, MessageCircleWarning } from 'lucide-react-native'
-import { ScrollView, View } from 'react-native'
+import { Pressable, ScrollView, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Bar, CartesianChart } from 'victory-native'
 
 export default function Home() {
   const { colorScheme } = useColorScheme()
+  const router = useRouter()
   const isLoading = false
 
   const PRECIPITATION_DATA = [
@@ -78,52 +80,57 @@ export default function Home() {
         {isLoading ? (
           <Skeleton className="w-full h-58 rounded-2xl" />
         ) : (
-          <Card className="w-full rounded-2xl">
-            <CardHeader>
-              <Text className="text-2xl font-semibold">
-                Quantidade de chuva
-              </Text>
-            </CardHeader>
-            <CardContent className="flex flex-row items-center justify-between">
-              <View className="flex flex-col items-center justify-center">
-                <View className="flex flex-row items-baseline gap-1">
-                  <Text className="text-3xl font-semibold">82</Text>
-                  <Text className="text-xl">mm</Text>
+          <Pressable
+            className="w-full p-0"
+            onPress={() => router.push('/measurements')}
+          >
+            <Card className="w-full rounded-2xl">
+              <CardHeader>
+                <Text className="text-2xl font-semibold">
+                  Quantidade de chuva
+                </Text>
+              </CardHeader>
+              <CardContent className="flex flex-row items-center justify-between">
+                <View className="flex flex-col items-center justify-center">
+                  <View className="flex flex-row items-baseline gap-1">
+                    <Text className="text-3xl font-semibold">82</Text>
+                    <Text className="text-xl">mm</Text>
+                  </View>
+                  <Text className="text-lg">Últimas 24h</Text>
                 </View>
-                <Text className="text-lg">Últimas 24h</Text>
-              </View>
-              <View className="h-32">
-                <View className="flex-1 h-32">
-                  <CartesianChart
-                    data={PRECIPITATION_DATA}
-                    xKey="day"
-                    yKeys={['precipitation']}
-                    domainPadding={{ left: 13, right: 15 }}
-                  >
-                    {({ points, chartBounds }) => (
-                      <Bar
-                        points={points.precipitation}
-                        chartBounds={chartBounds}
-                        color={Colors[colorScheme].primary}
-                        innerPadding={0.35}
-                        roundedCorners={{ topLeft: 6, topRight: 6 }}
-                      />
-                    )}
-                  </CartesianChart>
-                </View>
-                <View className="flex flex-row justify-between gap-1">
-                  {PRECIPITATION_DATA.map((item, index) => (
-                    <Text
-                      key={index}
-                      className="text-sm font-medium text-center"
+                <View className="h-32">
+                  <View className="flex-1 h-32">
+                    <CartesianChart
+                      data={PRECIPITATION_DATA}
+                      xKey="day"
+                      yKeys={['precipitation']}
+                      domainPadding={{ left: 13, right: 15 }}
                     >
-                      {item.day}
-                    </Text>
-                  ))}
+                      {({ points, chartBounds }) => (
+                        <Bar
+                          points={points.precipitation}
+                          chartBounds={chartBounds}
+                          color={Colors[colorScheme].primary}
+                          innerPadding={0.35}
+                          roundedCorners={{ topLeft: 6, topRight: 6 }}
+                        />
+                      )}
+                    </CartesianChart>
+                  </View>
+                  <View className="flex flex-row justify-between gap-1">
+                    {PRECIPITATION_DATA.map((item, index) => (
+                      <Text
+                        key={index}
+                        className="text-sm font-medium text-center"
+                      >
+                        {item.day}
+                      </Text>
+                    ))}
+                  </View>
                 </View>
-              </View>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          </Pressable>
         )}
 
         {isLoading ? (
