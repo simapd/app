@@ -1,8 +1,16 @@
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { Skeleton } from '@/components/ui/skeleton'
 import { Text } from '@/components/ui/text'
+import Colors from '@/constants/Colors'
+import { useColorScheme } from '@/lib/use-color-scheme'
+import { AlertTriangle } from 'lucide-react-native'
 import { ScrollView, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 export default function Home() {
+  const { colorScheme } = useColorScheme()
+  const isLoading = false
+
   return (
     <SafeAreaView style={{ flex: 1 }} edges={['top', 'left', 'right']}>
       <ScrollView
@@ -33,6 +41,28 @@ export default function Home() {
             </View>
           </View>
         </View>
+
+        {isLoading ? (
+          <Skeleton className="w-full h-40 rounded-2xl" />
+        ) : (
+          <Card className="w-full rounded-2xl">
+            <CardHeader className="flex flex-row items-center gap-4">
+              <AlertTriangle
+                color={Colors[colorScheme].destructive}
+                size={20}
+              />
+              <Text className="text-2xl font-semibold">
+                Alto risco de deslizamento
+              </Text>
+            </CardHeader>
+            <CardContent>
+              <Text className="text-lg">
+                Precipitação intensa nas últimas 24 horas. Evacuação preventiva
+                recomendada.
+              </Text>
+            </CardContent>
+          </Card>
+        )}
       </ScrollView>
     </SafeAreaView>
   )
