@@ -3,7 +3,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { Text } from '@/components/ui/text'
 import Colors from '@/constants/Colors'
 import { useColorScheme } from '@/lib/use-color-scheme'
-import { AlertTriangle } from 'lucide-react-native'
+import { AlertTriangle, MessageCircleWarning } from 'lucide-react-native'
 import { ScrollView, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Bar, CartesianChart } from 'victory-native'
@@ -154,6 +154,26 @@ export default function Home() {
                   <Text className="text-lg">Quarta</Text>
                   <Text className="text-lg font-semibold">0.45 m/s</Text>
                 </View>
+              </View>
+            </CardContent>
+          </Card>
+        )}
+
+        {isLoading ? (
+          <Skeleton className="w-full h-44 rounded-2xl" />
+        ) : (
+          <Card className="w-full rounded-2xl p-5">
+            <CardContent className="flex flex-row items-center justify-between gap-4 p-0">
+              <MessageCircleWarning
+                color={Colors[colorScheme].text}
+                size={48}
+              />
+              <View className="flex-1 items-start justify-center gap-4">
+                <Text className="text-2xl font-semibold">Reporte um risco</Text>
+                <Text className="text-lg">
+                  Caso detecte algum risco de deslizamento, ajude a comunidade
+                  reportando aqui.
+                </Text>
               </View>
             </CardContent>
           </Card>
