@@ -16,7 +16,7 @@ import { useRiskAreas } from '@/lib/hooks/use-risk-areas'
 import { useColorScheme } from '@/lib/use-color-scheme'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { router } from 'expo-router'
-import { Eye, EyeOff, Loader2 } from 'lucide-react-native'
+import { Eye, EyeOff } from 'lucide-react-native'
 import { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { ActivityIndicator, Pressable, ScrollView, View } from 'react-native'
@@ -106,7 +106,7 @@ export default function SignupScreen() {
               name="areaId"
               render={({ field: { onChange, value } }) => (
                 <FormField
-                  label="Área de risco"
+                  label="Area de risco"
                   errorMsg={errors.areaId?.message}
                   hasError={!!errors.areaId}
                 >
@@ -135,10 +135,6 @@ export default function SignupScreen() {
                     <SelectContent>
                       {isLoadingAreas ? (
                         <View className="p-4 flex-row items-center justify-center">
-                          <Loader2
-                            size={16}
-                            className="text-muted-foreground animate-spin mr-2"
-                          />
                           <Text className="text-muted-foreground">
                             Carregando áreas...
                           </Text>
