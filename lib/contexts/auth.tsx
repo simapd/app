@@ -10,7 +10,7 @@ import type {
   SignupFormData,
 } from '../../app/(auth)/schemas/schemas'
 import { authService } from '../services/auth'
-import { getTokenInfo, isTokenExpired } from '../utils/jwt'
+import { getTokenInfo, isTokenExpired } from '../../utils/jwt-decode'
 
 interface User {
   id: string
