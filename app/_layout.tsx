@@ -1,5 +1,6 @@
 import Colors from '@/constants/Colors'
 import '@/global.css'
+import { AuthProvider } from '@/lib/contexts/auth'
 import { useColorScheme } from '@/lib/use-color-scheme'
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -9,6 +10,7 @@ import {
   type Theme,
   ThemeProvider,
 } from '@react-navigation/native'
+import { PortalHost } from '@rn-primitives/portal'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Stack } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
@@ -70,15 +72,22 @@ export default function RootLayout() {
       <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
         <SafeAreaProvider>
           <QueryClientProvider client={queryClient}>
-            <BottomSheetModalProvider>
-              <StatusBar style={isDarkColorScheme ? 'light' : 'dark'} />
-              <Stack screenOptions={{ headerShown: false }} />
-              <Toaster
-                position="top-center"
-                theme={isDarkColorScheme ? 'dark' : 'light'}
-                richColors
-              />
-            </BottomSheetModalProvider>
+            <AuthProvider>
+              <BottomSheetModalProvider>
+                <StatusBar style={isDarkColorScheme ? 'light' : 'dark'} />
+                <Stack screenOptions={{ headerShown: false }}>
+                  <Stack.Screen name="index" />
+                  <Stack.Screen name="(auth)" />
+                  <Stack.Screen name="(tabs)" />
+                </Stack>
+                <Toaster
+                  position="top-center"
+                  theme={isDarkColorScheme ? 'dark' : 'light'}
+                  richColors
+                />
+                <PortalHost />
+              </BottomSheetModalProvider>
+            </AuthProvider>
           </QueryClientProvider>
         </SafeAreaProvider>
       </ThemeProvider>
