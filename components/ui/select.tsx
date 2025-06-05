@@ -1,9 +1,21 @@
+import Colors from '@/constants/Colors'
+import { useColorScheme } from '@/lib/use-color-scheme'
 import { cn } from '@/utils/utils'
 import * as SelectPrimitive from '@rn-primitives/select'
-import { Check, ChevronDown, ChevronUp } from 'lucide-react-native'
+import {
+  Check,
+  ChevronDown,
+  ChevronDownIcon,
+  ChevronUp,
+} from 'lucide-react-native'
 import type * as React from 'react'
 import { Platform, ScrollView, StyleSheet, View } from 'react-native'
-import Animated, { FadeIn, FadeOut } from 'react-native-reanimated'
+import Animated, {
+  FadeIn,
+  FadeOut,
+  useAnimatedStyle,
+  withTiming,
+} from 'react-native-reanimated'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 type Option = SelectPrimitive.Option
@@ -23,22 +35,38 @@ function SelectTrigger({
   ref?: React.RefObject<SelectPrimitive.TriggerRef>
   children?: React.ReactNode
 }) {
+  const { colorScheme } = useColorScheme()
+  const { open } = SelectPrimitive.useRootContext()
+
+  const animatedIconStyle = useAnimatedStyle(() => {
+    return {
+      transform: [
+        {
+          rotate: withTiming(open ? '180deg' : '0deg', { duration: 250 }),
+        },
+      ],
+    }
+  })
+
   return (
     <SelectPrimitive.Trigger
       ref={ref}
       className={cn(
-        'flex flex-row h-10 native:h-12 items-center text-sm justify-between rounded-xl border border-input bg-background px-3 py-2 web:ring-offset-background web:focus:outline-none web:focus:ring-2 web:focus:ring-ring web:focus:ring-offset-2 [&>span]:line-clamp-1',
+        'group flex flex-row h-10 native:h-12 items-center text-sm justify-between rounded-xl border border-input bg-background px-3 py-2 web:ring-offset-background web:focus:outline-none web:focus:ring-2 web:focus:ring-ring web:focus:ring-offset-2 [&>span]:line-clamp-1',
         props.disabled && 'web:cursor-not-allowed opacity-50',
         className
       )}
       {...props}
     >
       {children}
-      <ChevronDown
-        size={16}
-        aria-hidden={true}
-        className="text-foreground opacity-50"
-      />
+      <Animated.View style={animatedIconStyle}>
+        <ChevronDownIcon
+          size={16}
+          aria-hidden={true}
+          color={Colors[colorScheme].popoverForeground}
+          className="opacity-50"
+        />
+      </Animated.View>
     </SelectPrimitive.Trigger>
   )
 }
@@ -53,6 +81,9 @@ function SelectScrollUpButton({
   if (Platform.OS !== 'web') {
     return null
   }
+
+  const { colorScheme } = useColorScheme()
+
   return (
     <SelectPrimitive.ScrollUpButton
       className={cn(
@@ -61,7 +92,7 @@ function SelectScrollUpButton({
       )}
       {...props}
     >
-      <ChevronUp size={14} className="text-foreground" />
+      <ChevronUp size={14} color={Colors[colorScheme].popoverForeground} />
     </SelectPrimitive.ScrollUpButton>
   )
 }
@@ -76,6 +107,9 @@ function SelectScrollDownButton({
   if (Platform.OS !== 'web') {
     return null
   }
+
+  const { colorScheme } = useColorScheme()
+
   return (
     <SelectPrimitive.ScrollDownButton
       className={cn(
@@ -84,7 +118,7 @@ function SelectScrollDownButton({
       )}
       {...props}
     >
-      <ChevronDown size={14} className="text-foreground" />
+      <ChevronDown size={14} color={Colors[colorScheme].popoverForeground} />
     </SelectPrimitive.ScrollDownButton>
   )
 }
@@ -171,6 +205,8 @@ function SelectItem({
 }: SelectPrimitive.ItemProps & {
   ref?: React.RefObject<SelectPrimitive.ItemRef>
 }) {
+  const { colorScheme } = useColorScheme()
+
   return (
     <SelectPrimitive.Item
       className={cn(
@@ -180,11 +216,12 @@ function SelectItem({
       )}
       {...props}
     >
-      <View className="absolute left-2 native:left-3.5 flex h-3.5 native:pt-px w-3.5 items-center justify-center">
+      <View className="absolute right-3.5 flex h-3.5 native:pt-px w-3.5 items-center justify-center">
         <SelectPrimitive.ItemIndicator>
           <Check
             size={16}
             strokeWidth={3}
+            color={Colors[colorScheme].popoverForeground}
             className="text-popover-foreground"
           />
         </SelectPrimitive.ItemIndicator>
