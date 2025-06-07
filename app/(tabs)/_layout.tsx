@@ -41,6 +41,12 @@ export default function TabLayout() {
             ),
           }}
         />
+        <Tabs.Screen
+          name="(home)/create-report"
+          options={{
+            href: null,
+          }}
+        />
       </Tabs>
     </AuthGuard>
   )

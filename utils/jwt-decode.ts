@@ -2,6 +2,7 @@ import { jwtDecode } from 'jwt-decode'
 
 export interface JWTPayload {
   areaId: string
+  userId: string
   sub: string
   iat: number
   exp: number
@@ -34,7 +35,7 @@ export function isTokenExpired(token: string): boolean {
 
 export function getTokenInfo(
   token: string
-): { email: string; areaId: string } | null {
+): { email: string; areaId: string; userId: string } | null {
   const payload = decodeJWT(token)
   if (!payload) {
     return null
@@ -43,5 +44,6 @@ export function getTokenInfo(
   return {
     email: payload.sub,
     areaId: payload.areaId,
+    userId: payload.userId,
   }
 }

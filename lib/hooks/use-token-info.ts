@@ -6,6 +6,7 @@ export function useTokenInfo() {
   return {
     email: tokenInfo?.email,
     areaId: tokenInfo?.areaId,
+    userId: tokenInfo?.userId,
     tokenInfo,
     token,
     isAuthenticated,

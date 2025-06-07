@@ -35,7 +35,24 @@ export default function RootLayout() {
   const hasMounted = useRef(false)
   const { setColorScheme, isDarkColorScheme } = useColorScheme()
   const [isColorSchemeLoaded, setIsColorSchemeLoaded] = useState(false)
-  const queryClient = new QueryClient()
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        staleTime: 5 * 60 * 1000,
+        retry: (failureCount, error) => {
+          if (error && typeof error === 'object' && 'status' in error) {
+            if (error.status === 401 || error.status === 403) {
+              return false
+            }
+          }
+          return failureCount < 3
+        },
+      },
+      mutations: {
+        retry: false,
+      },
+    },
+  })
 
   useIsomorphicLayoutEffect(() => {
     if (hasMounted.current) {

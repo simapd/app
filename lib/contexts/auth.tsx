@@ -9,8 +9,8 @@ import type {
   LoginFormData,
   SignupFormData,
 } from '../../app/(auth)/schemas/schemas'
-import { authService } from '../services/auth'
 import { getTokenInfo, isTokenExpired } from '../../utils/jwt-decode'
+import { authService } from '../services/auth'
 
 interface User {
   id: string
@@ -23,7 +23,7 @@ interface User {
 interface AuthContextData {
   user: User | null
   token: string | null
-  tokenInfo: { email: string; areaId: string } | null
+  tokenInfo: { email: string; areaId: string; userId: string } | null
   isLoading: boolean
   isAuthenticated: boolean
   login: (data: LoginFormData) => Promise<void>
@@ -31,7 +31,7 @@ interface AuthContextData {
   logout: () => Promise<void>
 }
 
-const AuthContext = createContext<AuthContextData>({} as AuthContextData)
+const AuthContext = createContext<AuthContextData | null>(null)
 
 interface AuthProviderProps {
   children: ReactNode
@@ -43,6 +43,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [tokenInfo, setTokenInfo] = useState<{
     email: string
     areaId: string
+    userId: string
   } | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
