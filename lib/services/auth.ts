@@ -41,15 +41,20 @@ class AuthService {
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}))
-      throw new Error(errorData.message || `HTTP ${response.status}: ${response.statusText}`)
+      throw new Error(
+        errorData.message || `HTTP ${response.status}: ${response.statusText}`
+      )
     }
 
-    if (response.status === 204 || response.headers.get('content-length') === '0') {
+    if (
+      response.status === 204 ||
+      response.headers.get('content-length') === '0'
+    ) {
       return undefined as T
     }
 
     const contentType = response.headers.get('content-type')
-    if (contentType && contentType.includes('application/json')) {
+    if (contentType?.includes('application/json')) {
       return response.json()
     }
 
@@ -61,7 +66,7 @@ class AuthService {
     options: RequestInit
   ): Promise<T> {
     const token = await this.getStoredToken()
-    
+
     if (!token) {
       throw new Error('Token não encontrado. Faça login novamente.')
     }
@@ -93,15 +98,18 @@ class AuthService {
   async signup(
     data: Omit<SignupFormData, 'confirmPassword'>
   ): Promise<AuthResponse> {
-    const response = await this.makeRequest<AuthResponse>('/api/users/register', {
-      method: 'POST',
-      body: JSON.stringify({
-        name: data.name,
-        email: data.email,
-        password: data.password,
-        areaId: data.areaId,
-      }),
-    })
+    const response = await this.makeRequest<AuthResponse>(
+      '/api/users/register',
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          name: data.name,
+          email: data.email,
+          password: data.password,
+          areaId: data.areaId,
+        }),
+      }
+    )
 
     await AsyncStorage.setItem(TOKEN_KEY, response.token)
     return response
@@ -113,7 +121,10 @@ class AuthService {
     })
   }
 
-  async updateUser(id: string, data: UpdateUserRequestDTO): Promise<UserResponseDTO> {
+  async updateUser(
+    id: string,
+    data: UpdateUserRequestDTO
+  ): Promise<UserResponseDTO> {
     return this.makeAuthenticatedRequest<UserResponseDTO>(`/api/users/${id}`, {
       method: 'PUT',
       body: JSON.stringify(data),

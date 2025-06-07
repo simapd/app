@@ -5,7 +5,7 @@ import type {
 } from '../../app/(auth)/schemas/schemas'
 import { apiClient } from '../api/client'
 import { API_CONFIG } from '../api/config'
-import { RiskAreasDTO, UpdateRiskAreasDTO } from '../types/types'
+import type { RiskAreasDTO, UpdateRiskAreasDTO } from '../types/types'
 
 const ASPNET_BASE_URL = process.env.EXPO_PUBLIC_ASPNET_URL
 
