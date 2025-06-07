@@ -1,30 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { apiClient } from '../api/client'
-import { API_CONFIG, DEFAULT_PAGINATION } from '../api/config'
+import { API_CONFIG } from '../api/config'
 import { authService } from '../services/auth'
-import type {
-  PagedResponse,
-  PaginationParams,
-  UpdateUserRequestDTO,
-  UserResponseDTO,
-} from '../types/types'
-
-export function useUsers(params: PaginationParams = DEFAULT_PAGINATION) {
-  const queryParams = new URLSearchParams({
-    page: (params.page ?? DEFAULT_PAGINATION.page).toString(),
-    size: (params.size ?? DEFAULT_PAGINATION.size).toString(),
-    sortBy: params.sortBy ?? DEFAULT_PAGINATION.sortBy,
-    sortDir: params.sortDir ?? DEFAULT_PAGINATION.sortDir,
-  })
-
-  return useQuery({
-    queryKey: ['users', params],
-    queryFn: () =>
-      apiClient.get<PagedResponse<UserResponseDTO>>(
-        `${API_CONFIG.endpoints.users.base}?${queryParams}`
-      ),
-  })
-}
+import type { UpdateUserRequestDTO, UserResponseDTO } from '../types/types'
 
 export function useUser(id: string) {
   return useQuery({
